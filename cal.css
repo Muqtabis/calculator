@@ -1,0 +1,185 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap');
+
+/* -----------------------------------------------------------
+    COSMIC-NEON CALCULATOR  –  Original + All Enhancements
+    -----------------------------------------------------------
+    ▸ Animated deep-space background
+    ▸ Glassmorphism display
+    ▸ Neon button glow + hover/press effects
+    ▸ Focus / accessibility tweaks
+    ▸ Floating calculator panel
+    ▸ Operator-specific colours
+    --------------------------------------------------------- */
+
+/* ----------  GLOBAL / PAGE  ---------- */
+html {
+     background: #1d1234;
+     /* original radial layers */
+     background-image:
+          radial-gradient(circle at top center,   #2a1d5d, rgba(0,0,0,0) 70%),
+          radial-gradient(circle at bottom center,#3e1a42, #1d1234);
+     background-attachment: fixed;
+
+     /* NEW – animated colour shift */
+     background-size: 400% 400%;
+     animation: bgShift 10s ease infinite;
+
+     color: #e0e0e0;
+     transition: background 0.5s ease;
+}
+@keyframes bgShift{
+     0%   {background-position: 0%  50%;}
+     50%  {background-position:100% 50%;}
+     100% {background-position: 0%  50%;}
+}
+
+body{
+     /* Updated font to a "good" font: Open Sans */
+     font: 400 18px/1.6 "Open Sans", sans-serif;
+     margin:0;
+     padding:5em 0 2em;
+     text-align:center;
+}
+
+h1{font-weight:300;margin:0;}
+
+.warning{
+     background:-webkit-linear-gradient(45deg,#c97874 10%,#463042 90%);
+     background-clip:text;-webkit-background-clip:text;
+     -webkit-text-fill-color:transparent;
+     color:#8c5059; /* fallback */
+     font-weight:400;margin:0 auto 6em;max-width:9em;
+}
+
+/* ----------  CALCULATOR WRAPPER  ---------- */
+.calculator{
+     font-size:28px;
+     margin:0 auto;
+     width:10em;                   /* original width */
+     padding:1.25em;               /* more breathing room */
+
+     /* NEW – floating glass panel */
+     background:rgba(255,255,255,0.05);
+     backdrop-filter:blur(8px);
+     border-radius:1em;
+     box-shadow:0 10px 25px rgba(0,0,0,0.35);
+}
+.calculator::before,.calculator::after{content:" ";display:table;}
+.calculator::after{clear:both;}
+
+/* calculator fly-away on div/0 error (kept) */
+.broken{animation:broken 2s;transform:translate3d(0,-2000px,0);opacity:0;}
+
+/* ----------  DISPLAY / VIEWER  ---------- */
+.viewer{
+     /* glassmorphism + neon edge */
+     color:#ffcc00;
+     float:left;
+     width:7.5em;height:3em;
+     line-height:3em;text-align:right;
+     text-overflow:ellipsis;overflow:hidden;
+     background:rgba(255,255,255,0.05);
+     backdrop-filter:blur(4px);
+     border:2px solid #ffcc0077;
+     border-radius:0.35em;
+     box-shadow:0 0 10px #ffcc00;
+     padding:0 0.4em;
+}
+
+/* ----------  BUTTONS  ---------- */
+button{
+     border:2px solid #4dd0e1;
+     background:rgba(30,30,60,0.5);
+     color:#e0f7fa;
+     cursor:pointer;
+     float:left;
+     font:inherit;
+     font-weight:600;           /* clearer labels */
+     letter-spacing:0.05em;
+     margin:0.25em;
+     width:2em;height:2em;
+     border-radius:0.35em;
+     transition:transform 0.2s, box-shadow 0.4s, background 0.4s;
+     box-shadow:0 0 10px rgba(77,208,225,0.6);
+}
+
+/* neon lift + glow */
+button:hover{
+     transform:translateY(-2px);
+     background:#00acc1;
+     color:#fff;
+     box-shadow:0 0 20px #00acc1;
+}
+/* depress on click */
+button:active{
+     transform:scale(0.95);
+     box-shadow:0 0 4px #004080 inset;
+}
+/* keyboard / focus ring */
+button:focus{
+     outline:0;
+     box-shadow:0 0 0 2px #ffffffaa,0 0 10px #004080;
+}
+button:focus-visible{ /* wide dashed fallback */
+     outline:2px dashed #ffee33;
+}
+
+/* operator colour-coding */
+button[data-ops]{
+     background:#aa4466;
+     border-color:#aa4466;
+}
+button[data-ops]:hover{
+     background:#cc5577;
+     box-shadow:0 0 20px #cc5577;
+}
+
+/* DELIBERATELY UNCHANGED: .ops:focus::after & .equals:focus::after
+    They still inherit the original zoom effect with updated colours */
+
+/* RESET BUTTON */
+.reset{
+     background:rgba(150,120,200,0.3);
+     color:#aabbcc;
+     font-weight:400;
+     margin-left:-77px;
+     padding:0.5em 1em;
+     position:absolute;
+     top:-20em;left:50%;
+     border:1px solid #8c9eff;
+     border-radius:0.35em;
+     text-decoration:none;
+     box-shadow:0 0 10px #8c9eff;
+}
+.reset:hover{background:#8c9eff;color:#101010;}
+.reset.show{top:20em;animation:fadein 4s;}
+
+/* ----------  ANIMATIONS (unchanged) ---------- */
+@keyframes zoom{
+     0%{transform:scale(.2);opacity:1;}
+     70%{transform:scale(1);}
+     100%{opacity:0;}
+}
+@keyframes broken{
+     0%{transform:translate3d(0,0,0);opacity:1;}
+     5%{transform:rotate(5deg);}
+     15%{transform:rotate(-5deg);}
+     20%{transform:rotate(5deg);}
+     25%{transform:rotate(-5deg);}
+     50%{transform:rotate(45deg);}
+     70%{transform:translate3d(0,2000px,0);opacity:1;}
+     75%{opacity:0;}
+     100%{transform:translate3d(0,-2000px,0);}
+}
+@keyframes fadein{
+     0%{top:20em;opacity:0;}
+     50%{opacity:0;}
+     100%{opacity:1;}
+}
+
+/* ----------  RESPONSIVE TWEAKS  ---------- */
+@media (min-width:420px){
+     .calculator{width:12em;}
+     .viewer{width:8.5em;}
+     button{margin:0.5em;}
+}
